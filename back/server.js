@@ -23,7 +23,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // Setting up path
-const user_path = require('./path/users')
+const user_path = require('./path/user')
 const post_path = require('./path/post')
 const comment_path = require('./path/comment')
 
