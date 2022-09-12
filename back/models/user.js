@@ -23,6 +23,7 @@ module.exports = (sequelize) => {
         },
         email:{
             type: DataTypes.STRING,
+            unique: true,
             validate:{
                 isEmail: true // data validation
             }
@@ -39,6 +40,7 @@ module.exports = (sequelize) => {
     }, { paranoid: true }) // Here for softDelete
 
     User.beforeCreate( async (user) => {
+        user.role = 'user';
         user.password = await bcrypt.hash(user.password, parseInt(process.env.BCRYPT_SALT_ROUND))
     })
 
