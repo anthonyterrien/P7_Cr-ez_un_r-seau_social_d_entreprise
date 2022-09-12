@@ -87,7 +87,27 @@ exports.getAllUsers = async (req, res) => {
         .catch(res.status(500).json({message: 'Database Error'}))
 }
 
-exports.getUser = () => {}
+exports.getUser = async (req, res) => {
+    let userId = parseInt(req.params.id)
+
+    // Data verification
+    if (!userId) {
+        return res.json(400).json({message: 'Missing data'})
+    }
+
+    try {
+        // Checking if the user exists and sending
+        let user = await User.findOne({where: {id: userId}, attributes: ['id', 'pseudo', 'email']})
+        if (user === null) {
+            return res.status(401).json({message: 'This user does not exist'})
+        }
+        return res.json({user: user})
+
+    } catch (err) {
+        return res.status(500).json({message: 'Database Error'})
+    }
+}
+
 exports.updateUser = () => {}
 exports.untrashUser = () => {}
 exports.trashUser = () => {}
