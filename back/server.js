@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet');
 const expressSanitizer = require('express-sanitizer');
+let DB = require('./config/dbConfig')
 
 const app = express()
 
@@ -33,3 +34,12 @@ app.use('/users', user_path)
 app.use('/posts', post_path)
 app.use('/comments', comment_path)
 // app.use('/pictures', );
+
+DB.sequelize.authenticate()
+    .then(() => console.log('Database connection OK'))
+    .then(() => {
+        app.listen(process.env.SERVER_PORT, () => {
+            console.log(`This server is running on port ${process.env.SERVER_PORT}.`)
+        })
+    })
+    .catch(err => console.log('Database Error', err))
