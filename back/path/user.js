@@ -6,7 +6,7 @@ let router = express.Router();
 
 router.put('', rateLimiter, userCtrl.signup);
 router.post('/login', rateLimiter, userCtrl.login);
-router.get('/', checkToken, userCtrl.getAllUsers);
+router.get('/all', checkToken, userCtrl.getAllUsers);
 router.get('/:id', checkToken, userCtrl.getUser);
 router.patch('/:id', checkToken, userCtrl.updateUser);
 router.post('/untrash/:id', checkToken, userCtrl.untrashUser);

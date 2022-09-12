@@ -75,7 +75,18 @@ exports.login = async (req, res) => {
     }
 }
 
-exports.getAllUsers = () => {}
+exports.getAllUsers = async (req, res) => {
+    await User.findAll({
+        attributes: [
+            'id',
+            'pseudo',
+            'email',
+        ]
+    })
+        .then(users => res.json({users: users}))
+        .catch(res.status(500).json({message: 'Database Error'}))
+}
+
 exports.getUser = () => {}
 exports.updateUser = () => {}
 exports.untrashUser = () => {}
