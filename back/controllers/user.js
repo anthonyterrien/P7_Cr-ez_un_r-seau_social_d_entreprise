@@ -1,6 +1,7 @@
 const DB = require('../config/dbConfig')
 const User = DB.User
 const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
 
 exports.signup = async (req, res) => {
     const {lastName, firstName, pseudo, email, password} = req.body
@@ -108,7 +109,59 @@ exports.getUser = async (req, res) => {
     }
 }
 
-exports.updateUser = () => {}
+exports.updateUser = async (req, res) => {
+    let userId = parseInt(req.params.id)
+
+    try {
+        // Data verification
+        if (!userId) {
+            return res.status(400).json({message: 'Missing data'})
+        }
+        // Checking if the user exists
+        if (await User.findOne({where: {id: userId}, raw: true}) === null) {
+            return res.status(404).json({message: 'This user does not exist'})
+        }
+        let user = await User.findOne({where: {id: res.locals.id}, raw: true})
+        // Checking user or admin
+        if (user.role !== 'admin') {
+            if (userId !== res.locals.id) {
+                return res.status(401).json({message: 'You are not owner of this account'})
+            }
+            // Check not change data prohibited
+            if (req.body.id
+                || req.body.role
+                || req.body.createdAt
+                || req.body.updatedAt) {
+                return res.status(401).json({message: 'you are not authorized'})
+            }
+        }
+        // If change of email check if it already exists
+        if (req.body.email) {
+            if (await User.findOne({where: {email: req.body.email}, raw: true})) {
+                return res.status(409).json({message: `An account already exists with this email: ${req.body.email}`});
+            }
+        }
+        // If change of pseudo check if it already exists
+        if (req.body.pseudo) {
+            if (await User.findOne({where: {pseudo: req.body.pseudo}, raw: true})) {
+                return res.status(409).json({message: `an account already exists with this pseudo: ${req.body.pseudo}`});
+            }
+        }
+        // If change password, hash new
+        if (req.body.password) {
+            req.body.password = await bcrypt.hash(req.body.password, parseInt(process.env.BCRYPT_SALT_ROUND))
+        }
+        // Update user
+        await User.update(
+            req.body, {
+                where: {id: userId},
+            })
+        return res.json({message: 'User Updated'})
+    } catch (err) {
+        return res.status(500).json({message: 'Database Error'})
+    }
+}
+
 exports.untrashUser = () => {}
 exports.trashUser = () => {}
 exports.deleteUser = () => {}
