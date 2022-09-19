@@ -58,7 +58,31 @@ exports.getComment = async (req, res) => {
     }
 }
 
-exports.updateComment = () => {}
+exports.updateComment = async (req, res) => {
+    let commentId = parseInt(req.params.id)
+
+    try {
+        // Check not change data prohibited
+        if (res.locals !== 'admin') {
+            if (req.body.id
+                || req.body.postId
+                || req.body.userId
+                || req.body.createdAt
+                || req.body.updatedAt) {
+                return res.status(401).json({message: 'you are not authorized'})
+            }
+        }
+        // Update Comment
+        await Comment.update(
+            req.body, {
+                where: {id: commentId},
+            })
+        return res.json({message: 'Comment Updated'})
+    } catch (err) {
+        return res.status(500).json({message: 'Database Error'})
+    }
+}
+
 exports.untrashComment = () => {}
 exports.trashComment = () => {}
 exports.deleteComment = () => {}
