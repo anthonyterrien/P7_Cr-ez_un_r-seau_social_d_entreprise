@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.put('', checkToken, commentCtrl.createComment);
 router.get('/all', checkToken, commentCtrl.getAllComments);
-router.get('/:id', checkToken, commentCtrl.getComments);
+router.get('/:id', checkToken, commentCtrl.getComment);
 router.patch('/:id', checkToken, commentCtrl.updateComment);
 router.post('/untrash/:id', checkToken, commentCtrl.untrashComment);
 router.delete('/trash/:id', checkToken, commentCtrl.trashComment);
