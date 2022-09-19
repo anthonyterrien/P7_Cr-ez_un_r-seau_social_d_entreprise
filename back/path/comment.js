@@ -4,7 +4,7 @@ const commentCtrl = require('../controllers/comment');
 const router = express.Router();
 
 router.put('', checkToken, commentCtrl.createComment);
-router.get('', checkToken, commentCtrl.getAllComments);
+router.get('/all', checkToken, commentCtrl.getAllComments);
 router.get('/:id', checkToken, commentCtrl.getComments);
 router.patch('/:id', checkToken, commentCtrl.updateComment);
 router.post('/untrash/:id', checkToken, commentCtrl.untrashComment);
