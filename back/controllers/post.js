@@ -79,5 +79,17 @@ exports.updatePost = async (req, res) => {
 
 exports.likePost = () => {}
 exports.untrashPost = () => {}
-exports.trashPost = () => {}
+
+exports.trashPost = async (req, res) => {
+    let postId = parseInt(req.params.id)
+
+    try {
+        // soft Delete post
+        Post.destroy({where: {id: postId}})
+            .then(() => res.status(204).json({}))
+    } catch (err) {
+        return res.status(500).json({message: 'Database Error'})
+    }
+}
+
 exports.deletePost = () => {}
