@@ -23,7 +23,12 @@ exports.createPost = async (req, res) => {
     }
 }
 
-exports.getAllPosts = () => {}
+exports.getAllPosts = async (req, res) => {
+    await Post.findAll()
+        .then(posts => res.json({data: posts}))
+        .catch(res.status(500).json({message: 'Database Error'}))
+}
+
 exports.getPost = () => {}
 exports.updatePost = () => {}
 exports.likePost = () => {}
