@@ -51,7 +51,32 @@ exports.getPost = async (req, res) => {
     }
 }
 
-exports.updatePost = () => {}
+exports.updatePost = async (req, res) => {
+    let postId = parseInt(req.params.id)
+
+    try {
+        // Check not change data prohibited
+        if (res.locals !== 'admin') {
+            if (req.body.id
+                || req.body.userId
+                || req.body.like
+                || req.body.userIdLiked
+                || req.body.createdAt
+                || req.body.updatedAt) {
+                return res.status(401).json({message: 'you are not authorized'})
+            }
+        }
+        // Update Post
+        await Post.update(
+            req.body, {
+                where: {id: postId},
+            })
+        return res.json({message: 'Post Updated'})
+    } catch (err) {
+        return res.status(500).json({message: 'Database Error'})
+    }
+}
+
 exports.likePost = () => {}
 exports.untrashPost = () => {}
 exports.trashPost = () => {}
