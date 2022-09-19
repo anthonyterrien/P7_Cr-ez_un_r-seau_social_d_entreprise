@@ -107,4 +107,14 @@ exports.trashComment = async (req, res) => {
     }
 }
 
-exports.deleteComment = () => {}
+exports.deleteComment = async (req, res) => {
+    let commentId = parseInt(req.params.id)
+
+    try {
+        // Delete comment
+        Comment.destroy({where: {id: commentId}, force: true})
+            .then(() => res.status(204).json({}))
+    } catch (err) {
+        return res.status(500).json({message: 'Database Error'})
+    }
+}
