@@ -113,21 +113,12 @@ exports.updateUser = async (req, res) => {
     let userId = parseInt(req.params.id)
 
     try {
-        // Data verification
-        if (!userId) {
-            return res.status(400).json({message: 'Missing data'})
-        }
         // Checking if the user exists
         if (await User.findOne({where: {id: userId}, raw: true}) === null) {
             return res.status(404).json({message: 'This user does not exist'})
         }
-        let user = await User.findOne({where: {id: res.locals.id}, raw: true})
-        // Checking user or admin
-        if (user.role !== 'admin') {
-            if (userId !== res.locals.id) {
-                return res.status(401).json({message: 'You are not owner of this account'})
-            }
-            // Check not change data prohibited
+        // Check not change data prohibited
+        if (res.locals !== 'admin') {
             if (req.body.id
                 || req.body.role
                 || req.body.createdAt
@@ -165,17 +156,6 @@ exports.updateUser = async (req, res) => {
 exports.untrashUser = async (req, res) => {
     let userId = parseInt(req.params.id)
 
-    // Data verification
-    if (!userId) {
-        return res.status(400).json({message: 'Missing parameter'})
-    }
-    let user = await User.findOne({where: {id: res.locals.id}, raw: true})
-    // Checking user or admin
-    if (user.role !== 'admin') {
-        if (userId !== res.locals.id) {
-            return res.status(401).json({message: 'You are not owner of this account'})
-        }
-    }
     try {
         // Restore user
         User.restore({where: {id: userId}})
@@ -188,17 +168,6 @@ exports.untrashUser = async (req, res) => {
 exports.trashUser = async (req, res) => {
     let userId = parseInt(req.params.id)
 
-    // Data verification
-    if (!userId) {
-        return res.status(400).json({message: 'Missing parameter'})
-    }
-    let user = await User.findOne({where: {id: res.locals.id}, raw: true})
-    // Checking user or admin
-    if (user.role !== 'admin') {
-        if (userId !== res.locals.id) {
-            return res.status(401).json({message: 'You are not owner of this account'})
-        }
-    }
     try {
         // soft Delete user
         User.destroy({where: {id: userId}})
@@ -211,21 +180,6 @@ exports.trashUser = async (req, res) => {
 exports.deleteUser = async (req, res) => {
     let userId = parseInt(req.params.id)
 
-    // Data verification
-    if (!userId) {
-        return res.status(400).json({message: 'Missing parameter'})
-    }
-    let user = await User.findOne({where: {id: res.locals.id}, raw: true})
-    if (user) {
-        // Checking user or admin
-        if (user.role !== 'admin') {
-            if (userId !== res.locals.id) {
-                return res.status(401).json({message: 'You are not owner of this account'})
-            }
-        }
-    } else {
-        return res.status(400).json({message: 'Missing data'})
-    }
     try {
         // Delete user
         User.destroy({where: {id: userId}, force: true})
