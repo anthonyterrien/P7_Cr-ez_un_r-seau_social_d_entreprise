@@ -11,6 +11,6 @@ router.patch('/:id', checkToken, checkRoleForPost, postCtrl.updatePost);
 router.post('/:id/like', checkToken, postCtrl.likePost);
 router.post('/untrash/:id', checkToken, checkRoleForPost, postCtrl.untrashPost);
 router.delete('/trash/:id', checkToken, checkRoleForPost, postCtrl.trashPost);
-router.delete('/:id', checkToken, postCtrl.deletePost);
+router.delete('/:id', checkToken, checkRoleForPost, postCtrl.deletePost);
 
 module.exports = router

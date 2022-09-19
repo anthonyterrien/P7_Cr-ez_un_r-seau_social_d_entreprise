@@ -103,4 +103,14 @@ exports.trashPost = async (req, res) => {
     }
 }
 
-exports.deletePost = () => {}
+exports.deletePost = async (req, res) => {
+    let postId = parseInt(req.params.id)
+
+    try {
+        // Delete post
+        Post.destroy({where: {id: postId}, force: true})
+            .then(() => res.status(204).json({}))
+    } catch (err) {
+        return res.status(500).json({message: 'Database Error'})
+    }
+}
