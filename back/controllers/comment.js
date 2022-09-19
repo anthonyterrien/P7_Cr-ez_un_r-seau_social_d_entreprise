@@ -84,5 +84,17 @@ exports.updateComment = async (req, res) => {
 }
 
 exports.untrashComment = () => {}
-exports.trashComment = () => {}
+
+exports.trashComment = async (req, res) => {
+    let commentId = parseInt(req.params.id)
+
+    try {
+        // soft Delete comment
+        Comment.destroy({where: {id: commentId}})
+            .then(() => res.status(204).json({}))
+    } catch (err) {
+        return res.status(500).json({message: 'Database Error'})
+    }
+}
+
 exports.deleteComment = () => {}
