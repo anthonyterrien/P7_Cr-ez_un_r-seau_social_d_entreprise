@@ -162,7 +162,27 @@ exports.updateUser = async (req, res) => {
     }
 }
 
-exports.untrashUser = () => {
+exports.untrashUser = async (req, res) => {
+    let userId = parseInt(req.params.id)
+
+    // Data verification
+    if (!userId) {
+        return res.status(400).json({message: 'Missing parameter'})
+    }
+    let user = await User.findOne({where: {id: res.locals.id}, raw: true})
+    // Checking user or admin
+    if (user.role !== 'admin') {
+        if (userId !== res.locals.id) {
+            return res.status(401).json({message: 'You are not owner of this account'})
+        }
+    }
+    try {
+        // Restore user
+        User.restore({where: {id: userId}})
+            .then(() => res.status(204).json({}))
+    } catch (err) {
+        return res.status(500).json({message: 'Database Error'})
+    }
 }
 
 exports.trashUser = async (req, res) => {
