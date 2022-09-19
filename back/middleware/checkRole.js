@@ -1,6 +1,7 @@
 const DB = require("../config/dbConfig");
 const User = DB.User
 const Post = DB.Post
+const Comment = DB.Comment
 
 // TODO remove duplicate code
 
@@ -51,3 +52,28 @@ const checkRoleForPost = async (req, res, next) => {
     }
 }
 module.exports = checkRoleForPost
+
+const checkRoleForComment = async (req, res, next) => {
+    let commentId = parseInt(req.params.id)
+
+    if (!commentId) {
+        return res.json(400).json({message: 'Missing data'})
+    }
+
+    let user = await User.findOne({where: {id: res.locals.id}, raw: true})
+    if (user) {
+        if (user.role !== 'admin') {
+            let comment = await Comment.findOne({where: {id: commentId}, raw: true})
+
+            if (comment.userId !== res.locals.id) {
+                return res.status(401).json({message: 'You are not owner of this account'})
+            }
+        }
+        res.locals = user.role;
+
+        next()
+    } else {
+        return res.status(401).json({message: 'Your account no longer exists'})
+    }
+}
+module.exports = checkRoleForComment
