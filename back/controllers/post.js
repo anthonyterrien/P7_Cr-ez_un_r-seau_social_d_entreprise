@@ -29,7 +29,28 @@ exports.getAllPosts = async (req, res) => {
         .catch(res.status(500).json({message: 'Database Error'}))
 }
 
-exports.getPost = () => {}
+exports.getPost = async (req, res) => {
+    let postId = parseInt(req.params.id)
+    // Data verification
+    if (!postId) {
+        return res.json(400).json({message: 'Missing Parameter'})
+    }
+    try {
+        // Post Recovery
+        let post = await Post.findOne({
+            where: {id: postId},
+        })
+        // Test if result
+        if (post === null) {
+            return res.status(404).json({message: 'This post does not exist !'})
+        }
+        // Send post found
+        return res.json({data: post})
+    } catch (err) {
+        return res.status(500).json({message: 'Database Error', error: err})
+    }
+}
+
 exports.updatePost = () => {}
 exports.likePost = () => {}
 exports.untrashPost = () => {}
