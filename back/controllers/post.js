@@ -78,7 +78,18 @@ exports.updatePost = async (req, res) => {
 }
 
 exports.likePost = () => {}
-exports.untrashPost = () => {}
+
+exports.untrashPost = async (req, res) => {
+    let postId = parseInt(req.params.id)
+
+    try {
+        // Restore post
+        Post.restore({where: {id: postId}})
+            .then(() => res.status(204).json({}))
+    } catch (err) {
+        return res.status(500).json({message: 'Database Error'})
+    }
+}
 
 exports.trashPost = async (req, res) => {
     let postId = parseInt(req.params.id)
