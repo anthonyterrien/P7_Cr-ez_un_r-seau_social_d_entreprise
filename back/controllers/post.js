@@ -67,22 +67,37 @@ exports.getPostLiked = async (req, res) => {
 }
 
 exports.updatePost = async (req, res) => {
-    let postId = parseInt(req.params.id)
+    const changeImg = req.file
+    const justContent = JSON.parse(req.body.post)
+    let postToUpdate = ''
+
+    if (changeImg) {
+        changeImg.pictureUrl = `${req.protocol}://${req.get("host")}/pictures/${req.file.filename}`;
+        postToUpdate = changeImg
+        postToUpdate.title = justContent.title
+        postToUpdate.content = justContent.content
+    } else
+         if (justContent) {
+        postToUpdate = justContent
+    } else {
+        return res.json(400).json({message: 'Missing Parameter'})
+    }
 
     try {
         // Check not change data prohibited
         if (res.locals !== 'admin') {
-            if (req.body.id
-                || req.body.userId
-                || req.body.createdAt
-                || req.body.updatedAt) {
+            if (postToUpdate.id
+                || postToUpdate.userId
+                || postToUpdate.createdAt
+                || postToUpdate.updatedAt) {
                 return res.status(401).json({message: 'you are not authorized'})
             }
         }
         // Update Post
         await Post.update(
-            req.body, {
-                where: {id: postId},
+            postToUpdate,
+            {
+                where: {id: req.params.id},
             })
         return res.json({message: 'Post Updated'})
     } catch (err) {

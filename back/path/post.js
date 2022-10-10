@@ -7,9 +7,9 @@ let router = express.Router();
 
 router.put('', checkToken, multer, postCtrl.createPost);
 router.get('/all', checkToken, postCtrl.getAllPosts);
-router.get('/:id', checkToken, postCtrl.getPost);
 router.get('/like', checkToken, postCtrl.getPostLiked);
-router.patch('/:id', checkToken, checkRole.post, checkRole.checkRole, postCtrl.updatePost);
+router.get('/:id', checkToken, postCtrl.getPost);
+router.patch('/:id', checkToken, multer, checkRole.post, checkRole.checkRole, postCtrl.updatePost);
 router.post('/:id/like', checkToken, postCtrl.likePost);
 router.post('/untrash/:id', checkToken, checkRole.post, checkRole.checkRole, postCtrl.untrashPost);
 router.delete('/trash/:id', checkToken, checkRole.post, checkRole.checkRole, postCtrl.trashPost);
