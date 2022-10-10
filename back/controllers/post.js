@@ -3,10 +3,12 @@ const Post = DB.Post
 const PostLiked = DB.PostLiked
 
 exports.createPost = async (req, res) => {
-    const { title, pictureUrl, content} = req.body
+    const postObject = JSON.parse(req.body.post);
+
+    postObject.pictureUrl = `${req.protocol}://${req.get("host")}/pictures/${req.file.filename}`;
 
     // Data verification
-    if (!title || !pictureUrl || !content) {
+    if (!postObject.title || !postObject.pictureUrl || !postObject.content) {
         return res.status(400).json({message: 'Missing parameter'})
     }
 
@@ -14,9 +16,9 @@ exports.createPost = async (req, res) => {
         // Post creation
         await Post.create({
             userId: res.locals.id,
-            title: title,
-            content: content,
-            pictureUrl: pictureUrl,
+            title: postObject.title,
+            content: postObject.content,
+            pictureUrl: postObject.pictureUrl,
         })
         return res.json({message: 'Post Created'})
     } catch (err) {

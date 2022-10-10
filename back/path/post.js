@@ -2,9 +2,10 @@ const express = require('express');
 const checkToken = require('../middleware/jsonWebToken');
 const postCtrl = require('../controllers/post');
 const checkRole = require('../middleware/checkRole');
+const multer = require('../middleware/multerConfig');
 let router = express.Router();
 
-router.put('', checkToken, postCtrl.createPost);
+router.put('', checkToken, multer, postCtrl.createPost);
 router.get('/all', checkToken, postCtrl.getAllPosts);
 router.get('/:id', checkToken, postCtrl.getPost);
 router.get('/like', checkToken, postCtrl.getPostLiked);

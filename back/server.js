@@ -1,7 +1,6 @@
 const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet');
-const expressSanitizer = require('express-sanitizer');
 let DB = require('./config/dbConfig')
 
 const app = express()
@@ -14,10 +13,7 @@ app.use(cors({
 }))
 
 // Participates in securing the application
-app.use(helmet());
-
-// Participates in securing the application
-app.use(expressSanitizer());
+// app.use(helmet());
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -26,6 +22,7 @@ app.use(express.urlencoded({ extended: true }))
 const user_path = require('./path/user')
 const post_path = require('./path/post')
 const comment_path = require('./path/comment')
+const path = require("path");
 
 app.get('/', user_path)
 app.get('*', user_path)
@@ -33,7 +30,7 @@ app.get('*', user_path)
 app.use('/users', user_path)
 app.use('/posts', post_path)
 app.use('/comments', comment_path)
-// app.use('/pictures', );
+app.use('/pictures', express.static(path.join(__dirname, 'pictures')));
 
 DB.sequelize.authenticate()
     .then(() => console.log('Database connection OK'))

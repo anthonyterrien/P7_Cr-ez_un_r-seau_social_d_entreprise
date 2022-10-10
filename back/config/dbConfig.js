@@ -19,6 +19,6 @@ db.Post = require('../models/post')(sequelize)
 db.Comment = require('../models/comment')(sequelize)
 db.PostLiked = require('../models/postLiked')(sequelize)
 
-db.sequelize.sync({alter: true})
+// db.sequelize.sync({alter: true})
 
 module.exports = db
