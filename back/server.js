@@ -6,14 +6,15 @@ let DB = require('./config/dbConfig')
 const app = express()
 
 app.disable('x-powered-by')
+
+// Participates in securing the application
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
+
 app.use(cors({
     origin: "*",
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: "Origin, X-Requested-With, x-access-token, role, Content, Accept, Content-Type, Authorization"
 }))
-
-// Participates in securing the application
-// app.use(helmet());
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
