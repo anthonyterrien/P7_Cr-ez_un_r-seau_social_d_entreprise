@@ -25,9 +25,12 @@ exports.createPost = async (req, res) => {
 }
 
 exports.getAllPosts = async (req, res) => {
-    await Post.findAll()
-        .then(posts => res.json({data: posts}))
-        .catch(res.status(500).json({message: 'Database Error'}))
+    try {
+        await Post.findAll()
+            .then(posts => res.json({data: posts}))
+    } catch (err) {
+        return res.status(500).json({message: 'Database Error'})
+    }
 }
 
 exports.getPost = async (req, res) => {

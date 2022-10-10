@@ -31,9 +31,12 @@ exports.createComment = async (req, res) => {
 }
 
 exports.getAllComments = async (req, res) => {
-    await Comment.findAll()
-        .then(Comments => res.json({data: Comments}))
-        .catch(res.status(500).json({message: 'Database Error'}))
+    try {
+        await Comment.findAll()
+            .then(comments => res.json({data: comments}))
+    } catch (err) {
+        return res.status(500).json({message: 'Database Error'})
+    }
 }
 
 exports.getComment = async (req, res) => {
