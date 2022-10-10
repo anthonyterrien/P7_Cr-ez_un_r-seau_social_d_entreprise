@@ -52,6 +52,15 @@ exports.getPost = async (req, res) => {
     }
 }
 
+exports.getPostLiked = async (req, res) => {
+    try {
+        await PostLiked.findAll()
+            .then(postLiked => res.json({data: postLiked}))
+    } catch (err) {
+        return res.status(500).json({message: 'Database Error'})
+    }
+}
+
 exports.updatePost = async (req, res) => {
     let postId = parseInt(req.params.id)
 

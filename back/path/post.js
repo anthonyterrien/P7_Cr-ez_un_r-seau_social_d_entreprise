@@ -7,6 +7,7 @@ let router = express.Router();
 router.put('', checkToken, postCtrl.createPost);
 router.get('/all', checkToken, postCtrl.getAllPosts);
 router.get('/:id', checkToken, postCtrl.getPost);
+router.get('/like', checkToken, postCtrl.getPostLiked);
 router.patch('/:id', checkToken, checkRoleForPost, postCtrl.updatePost);
 router.post('/:id/like', checkToken, postCtrl.likePost);
 router.post('/untrash/:id', checkToken, checkRoleForPost, postCtrl.untrashPost);
