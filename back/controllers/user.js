@@ -2,6 +2,15 @@ const DB = require('../config/dbConfig')
 const User = DB.User
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcrypt");
+const passwordValidator = require('password-validator');
+const schema = new passwordValidator();
+
+schema
+    .is().min(10)                                    // Minimum length 8
+    .is().max(30)                                  // Maximum length 100
+    .has().uppercase()                              // Must have uppercase letters
+    .has().not().spaces()                           // Should not have spaces
+    .is().not().oneOf(['password', 'Password', "password123"]); // Blacklist these values
 
 exports.signup = async (req, res) => {
     const {lastName, firstName, pseudo, email, password} = req.body
@@ -9,6 +18,13 @@ exports.signup = async (req, res) => {
     // Data verification
     if (!lastName || !firstName || !pseudo || !email || !password) {
         return res.status(400).json({message: 'missing data'});
+    }
+
+    let validPassword = schema.validate(password, {details: true})
+
+    if (validPassword !== []) {
+        let message = JSON.stringify(validPassword)
+        return res.status(409).json({message: `${message}`});
     }
 
     try {
@@ -144,6 +160,12 @@ exports.updateUser = async (req, res) => {
         }
         // If change password, hash new
         if (req.body.password) {
+            let validPassword = schema.validate(req.body.password, {details: true})
+
+            if (validPassword !== []) {
+                let message = JSON.stringify(validPassword)
+                return res.status(409).json({message: `${message}`});
+            }
             req.body.password = await bcrypt.hash(req.body.password, parseInt(process.env.BCRYPT_SALT_ROUND))
         }
         // Update user
