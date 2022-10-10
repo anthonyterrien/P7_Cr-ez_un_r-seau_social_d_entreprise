@@ -22,14 +22,5 @@ module.exports = (sequelize) => {
         pictureUrl: {
             type: DataTypes.STRING,
         },
-        like: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0,
-        },
-        userIdLiked: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            defaultValue: 0,
-        },
     }, { paranoid: true }) // Here for softDelete
 }

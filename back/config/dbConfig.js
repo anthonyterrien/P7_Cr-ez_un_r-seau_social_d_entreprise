@@ -17,6 +17,7 @@ db.sequelize = sequelize
 db.User = require('../models/user')(sequelize)
 db.Post = require('../models/post')(sequelize)
 db.Comment = require('../models/comment')(sequelize)
+db.PostLiked = require('../models/postLiked')(sequelize)
 
 db.sequelize.sync({alter: true})
 
