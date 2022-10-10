@@ -9,9 +9,9 @@ router.put('', rateLimiter, userCtrl.signup);
 router.post('/login', rateLimiter, userCtrl.login);
 router.get('/all', checkToken, userCtrl.getAllUsers);
 router.get('/:id', checkToken, userCtrl.getUser);
-router.patch('/:id', checkToken, checkRole, userCtrl.updateUser);
-router.post('/untrash/:id', checkToken, checkRole, userCtrl.untrashUser);
-router.delete('/trash/:id', checkToken, checkRole, userCtrl.trashUser);
-router.delete('/:id', checkToken, checkRole, userCtrl.deleteUser);
+router.patch('/:id', checkToken, checkRole.user, checkRole.checkRole, userCtrl.updateUser);
+router.post('/untrash/:id', checkToken, checkRole.user, checkRole.checkRole, userCtrl.untrashUser);
+router.delete('/trash/:id', checkToken, checkRole.user, checkRole.checkRole, userCtrl.trashUser);
+router.delete('/:id', checkToken, checkRole.user, checkRole.checkRole, userCtrl.deleteUser);
 
 module.exports = router
