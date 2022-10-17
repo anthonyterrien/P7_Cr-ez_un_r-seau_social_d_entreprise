@@ -1,1 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
+.form_error{
+  color:red;
+}
+html {
+  height: 100%;
+  background: linear-gradient(90deg, #FD2D01 14%, #FFD7D7 100%);
+  //background-image: url("./assets/icon-left-font.svg");
+}
+body {
+  margin: 0;
+}
+.group {
+  margin: 1.2vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+input {
+  border-color: transparent;
+  border-radius: 30px;
+  padding: 5px 10px;
+}
+button {
+  background-color: rgba(78, 81, 102, 0.2);
+  border-color: transparent;
+  border-radius: 30px;
+  padding: 5px 10px;
+  color: black;
+}

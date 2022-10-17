@@ -23,3 +23,13 @@ export interface ISignup {
   email: string,
   password: string
 }
+
+export interface ITokenUser{
+  id: number,
+  role: string,
+  lastName: string,
+  firstName: string,
+  email: string,
+  iap?: number,
+  exp?: number
+}

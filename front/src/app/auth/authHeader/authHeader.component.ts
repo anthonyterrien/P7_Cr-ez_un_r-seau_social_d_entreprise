@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-authHeader',
@@ -8,8 +9,31 @@ import { Component, OnInit } from '@angular/core';
 
 export class AuthHeaderComponent implements OnInit {
 
-  constructor() {}
+  message: string | undefined;
 
-  ngOnInit() {}
+  constructor(private router: Router,
+              private route: ActivatedRoute) {
+  }
 
+  ngOnInit(): void {
+    if (window.location.pathname === '/login' || window.location.pathname === '/auth/login') {
+      this.message = 'Crée un profile';
+    } else {
+      this.message = 'Connexion';
+    }
+  }
+
+  async button() {
+    if (window.location.pathname === '/login' || window.location.pathname === '/auth/login') {
+      this.message = 'Connexion';
+      await this.navigate('signup')
+    } else {
+      this.message = 'Crée un profile';
+      await this.navigate('login')
+    }
+  }
+  async navigate(path: string) {
+    await this.router.navigate([{outlets: {primary: path}}],
+      {relativeTo: this.route});
+  }
 }
