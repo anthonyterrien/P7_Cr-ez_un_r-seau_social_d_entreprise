@@ -33,3 +33,19 @@ export interface ITokenUser{
   iap?: number,
   exp?: number
 }
+
+export interface IUserForUpdate {
+  lastName: string,
+  firstName: string,
+  pseudo: string,
+  email: string,
+  password: string,
+}
+
+export interface ISingleUser{
+  data: IUser
+}
+
+export interface IDataUser{
+  data: IUser[]
+}

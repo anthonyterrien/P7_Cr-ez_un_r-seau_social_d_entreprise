@@ -6,6 +6,18 @@ const routes: Routes = [
   {
     path: '', component: AlayoutComponent, children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+      {
+        path: '', loadChildren: () => import('./post/post.module')
+          .then(m => m.PostModule)
+      },
+      {
+        path: 'post', loadChildren: () => import('./post/post.module')
+          .then(m => m.PostModule)
+      },
+      {
+        path: 'user', loadChildren: () => import('./user/user.module')
+          .then(m => m.UserModule)
+      }
     ]
   }
 ];
