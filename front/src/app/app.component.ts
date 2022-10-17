@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ApiErrorService } from './services/apiError.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,24 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'front';
+  title = 'Groupomania';
+  message = ''
+  display = false
+
+  constructor(private apiErrorService: ApiErrorService){}
+
+  ngOnInit(){
+    this.apiErrorService.apiError.subscribe(
+      data => {
+        this.message = data
+        this.display = true
+      }
+    )
+  }
+
+  clearMessage(){
+    this.message = ''
+    this.display = false
+  }
+
 }
