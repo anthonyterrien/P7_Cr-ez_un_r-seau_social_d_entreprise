@@ -1,10 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+<div>
+  <form
+    name="form"
+    #f="ngForm"
+    (ngSubmit)="f.form.valid && onSubmit()"
+  >
+    <div class="group">
+      <label for="lastName">Nom</label>
+      <input type="text" name="lastName" id="lastName" [(ngModel)]="form.lastName" #lastName="ngModel" required>
+      <div class="form_error" *ngIf="lastName.errors && f.submitted">
+        Un Nom est nécessaire
+      </div>
+    </div>
 
-</body>
-</html>
+    <div class="group">
+      <label for="firstName">Prénom</label>
+      <input type="text" name="firstName" id="firstName" [(ngModel)]="form.firstName" #firstName="ngModel" required>
+      <div class="form_error" *ngIf="firstName.errors && f.submitted">
+        Un Prénom est nécessaire
+      </div>
+    </div>
+
+    <div class="group">
+      <label for="pseudo">Pseudo</label>
+      <input type="text" name="pseudo" id="pseudo" [(ngModel)]="form.pseudo" #pseudo="ngModel" required>
+
+      <div class="form_error" *ngIf="pseudo.errors && f.submitted">
+        <div *ngIf="pseudo.errors['required']">Un Pseudo est nécessaire</div>
+        <div *ngIf="pseudo.errors['']">Ce Pseudo est déjà utilisé</div>
+      </div>
+    </div>
+
+    <div class="group">
+      <label for="email">E-mail</label>
+      <input type="email" name="email" id="email" [(ngModel)]="form.email" #email="ngModel" required>
+
+      <div class="form_error" *ngIf="email.errors && f.submitted">
+        <div *ngIf="email.errors['required']">Un E-mail est nécessaire</div>
+        <div *ngIf="email.errors['']">Cette E-mail est déjà utilisé</div>
+      </div>
+    </div>
+
+    <div class="group">
+      <label for="password">Mot de passe</label>
+      <input type="password" name="password" id="password" [(ngModel)]="form.password" #password="ngModel" required minlength="10">
+
+      <div class="form_error" *ngIf="password.errors && f.submitted">
+        <div *ngIf="password.errors['required']">Un mot de passe est nécessaire</div>
+        <div *ngIf="password.errors['minlength']">Ajouter des caractères supplémentaire</div>
+      </div>
+    </div>
+    <div class="group">
+      <button>Connection</button>
+    </div>
+  </form>
+</div>
