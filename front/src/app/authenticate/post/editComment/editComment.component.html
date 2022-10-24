@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+<div>
+  <div class="group">
+    <p class="title">Modifier votre commantaire</p>
+  </div>
+  <form #f="ngForm" name="form">
+    <div class="group">
+      <label for="content">Votre commantaire</label>
+      <input type="text" id="content"
+             name="content"
+             [(ngModel)]="comment.content"
+             #content="ngModel"
+      >
+    </div>
+    <div class="group">
+      <button (click)="f.form.valid && onSubmit()" type="submit">Modifier</button>
+    </div>
+  </form>
+</div>
 
-</body>
-</html>
