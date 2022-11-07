@@ -1,11 +1,12 @@
-# Backend
+# Backend  
 
-##Commencer
+-----------------
+## Commencer  
 ###
-1. Installer les dépendences
+1. Installer les dépendences  
 ````shell
 $ npm install
-````
+````  
 2. Mettre en place le fichier .env à la racine
 
 ↓ Contenu du fichier .env ↓
@@ -26,6 +27,7 @@ JWT_DURING=1h
 ````shell
 $ node -r dotenv/config server.js
 ````
-4. Le serveur est lancée sur: http://localhost:3000/ 
+4. Le serveur est lancée sur: http://localhost:3000/
+-----------------
 
-##Rendez-vous dans le dossier 'database'
+## Rendez-vous dans le dossier 'database'
