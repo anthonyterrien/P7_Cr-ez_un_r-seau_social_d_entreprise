@@ -20,9 +20,8 @@ exports.signup = async (req, res) => {
         return res.status(400).json({message: 'missing data'});
     }
 
-    let validPassword = schema.validate(password, {details: true})
-
-    if (validPassword !== []) {
+    if (!schema.validate(password)) {
+        let validPassword = schema.validate(req.body.password, {details: true})
         let message = JSON.stringify(validPassword)
         return res.status(409).json({message: `${message}`});
     }
@@ -160,9 +159,8 @@ exports.updateUser = async (req, res) => {
         }
         // If change password, hash new
         if (req.body.password) {
-            let validPassword = schema.validate(req.body.password, {details: true})
-
-            if (validPassword !== []) {
+            if (!schema.validate(req.body.password)) {
+                let validPassword = schema.validate(req.body.password, {details: true})
                 let message = JSON.stringify(validPassword)
                 return res.status(409).json({message: `${message}`});
             }
