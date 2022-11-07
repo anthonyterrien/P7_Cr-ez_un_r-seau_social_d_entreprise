@@ -1,0 +1,26 @@
+<form #f="ngForm" name="form">
+  <div class="group">
+    <label for="title">Titre</label>
+    <input type="text" id="title"
+           name="title"
+           [(ngModel)]="post.title"
+           #title="ngModel"
+    >
+  </div>
+  <div class="group">
+    <label for="content">Contenu</label>
+    <input type="text" id="content"
+           name="content"
+           [(ngModel)]="post.content"
+           #content="ngModel"
+    >
+  </div>
+  <div class="group" [formGroup]="postForm">
+    <input type="file" accept="image/*" #imageInput (change)="onFileAdded($event)">
+    <button (click)="imageInput.click()">Choisir une autre image</button>
+    <img [src]="imagePreview" *ngIf="imagePreview" class="imgPreview">
+  </div>
+  <div class="group">
+    <button (click)="f.form.valid && onSubmit()" type="submit">Modifier</button>
+  </div>
+</form>

@@ -1,0 +1,17 @@
+header{
+  background: #FD2D01;
+  box-shadow: 0 0.1vw 1vw 0.1vw rgba(78, 81, 102, 0.3);
+  display: flex;
+  justify-content: space-between;
+}
+
+.margin{
+  margin: 1vw;
+}
+
+.title {
+  font-size: 1.7vw;
+  color: black;
+  display: flex;
+  align-items: center;
+}

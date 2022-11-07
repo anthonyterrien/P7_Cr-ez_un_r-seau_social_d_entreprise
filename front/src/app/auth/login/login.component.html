@@ -1,0 +1,22 @@
+<div>
+  <form name="form" #f="ngForm">
+    <div class="group">
+      <label for="pseudo">Pseudo</label>
+      <input type="text" name="pseudo" id="pseudo" [(ngModel)]="form.pseudo" #pseudo="ngModel" required>
+      <div class="form_error" *ngIf="pseudo.errors && f.submitted">
+        Un Pseudo est nécessaire
+      </div>
+    </div>
+    <div class="group">
+      <label for="password">Mot de passe</label>
+      <input type="password" name="password" id="password" [(ngModel)]="form.password" #password="ngModel">
+
+      <div *ngIf="password.errors && f.submitted">
+        <div *ngIf="password.errors['required']">Un mot de passe est nécessaire</div>
+      </div>
+    </div>
+    <div class="group">
+      <button (click)="f.form.valid && onSubmit()">Connection</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,83 @@
+<button class="margin load" (click)="this.loadContentPage()" >
+  <i class="fa-solid fa-arrows-rotate"></i>
+</button>
+<div *ngFor="let post of postList" class="center">
+  <div class="mainContainer">
+    <div [class]="this.permissionModify(post, false)">
+      <div class="sousEditeurContainer">
+        <img class="logoEditeurContainer" src="../../../../assets/GroupomaniaLogoBright.png" alt="">
+        <div class="infoEditeurContainer">
+          <p *ngFor="let user of userList">{{ this.createdBy(user, post.userId) }}</p>
+          <p >{{ post.createdAt | date: 'dd/MM/yy HH:mm' }}</p>
+          <p *ngIf="this.modifiedPost" class="modified">(modifié)</p>
+        </div>
+      </div>
+      <div *ngIf="this.editPost">
+        <button (click)="this.deletePost(post.id, false)" class="trash"><i class="fa-solid fa-trash-can"></i></button>
+        <button [routerLink]="['edit', post.id]">
+          <i class="fa-solid fa-pen"></i>
+        </button>
+      </div>
+    </div>
+    <div class="contentContainer">
+      <p class="title">{{ post.title }}</p>
+      <p>{{ post.content }}</p>
+    </div>
+    <div class="imgContainer">
+      <img [src]="post.pictureUrl" alt="">
+    </div>
+    <div class="footerContainer">
+      <button class="like" [class]="this.getIfLiked(post.id) ? 'likeColor' : ''" (click)="this.addLike(post.id)">
+        <i class="fa-regular fa-thumbs-up"></i>
+        <p>{{this.likeListFilter.length}}</p>
+      </button>
+      <button (click)="this.openComment(post.id)">{{this.commentListFilter.length}}
+        {{this.commentListFilter.length === 0 ? ' commentaire' : ' commentaires'}}</button>
+    </div>
+  </div>
+
+  <div *ngIf="post.id === this.open" class="mainContainer commentContainer">
+
+    <div class="scrollZone">
+
+      <div *ngFor="let comment of this.commentListFilter">
+        <div class="commentLigne">
+          <div [class]="this.permissionModify(comment, true)">
+            <div class="sousEditeurContainer">
+              <img class="logoEditeurContainer" src="../../../../assets/GroupomaniaLogoBright.png" alt="">
+              <div class="infoEditeurContainer">
+                <p *ngFor="let user of userList">{{ this.createdBy(user, comment.userId) }}</p>
+                <p>{{ comment.createdAt | date: 'dd/MM/yy HH:mm' }}</p>
+                <p *ngIf="this.modifiedComment" class="modified">(modifié)</p>
+              </div>
+            </div>
+            <div *ngIf="this.editComment">
+              <button (click)="this.deletePost(comment.id, true)" class="trash"><i class="fa-solid fa-trash-can"></i></button>
+              <button [routerLink]="['edit/comment', comment.id]">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+            </div>
+          </div>
+          <div class="contentContainer">
+            <p>{{ comment.content }}</p>
+          </div>
+        </div>
+      </div>
+      <p *ngIf="this.commentListFilter.length === 0">Soyez le premier à ajouter un commentaire !</p>
+    </div>
+
+    <form #f="ngForm" name="form">
+      <div class="newComment">
+        <input type="text" id="content"
+               name="content"
+               placeholder="Votre commentaire..."
+               [(ngModel)]="comment.content"
+               #content="ngModel"
+        >
+        <button (click)="f.form.valid && onSubmit(post.id, f)" type="submit">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<header>
+  <div class="margin">
+    <button class="margin" [routerLink]="['/authenticate']">Publication</button>
+  </div>
+  <div class="margin title">Bonjour {{user.lastName | titlecase}} {{user.firstName | titlecase}}
+    <button class="margin" [routerLink]="['user/edit/', user.id]">
+      <i class="fa-solid fa-pen"></i>
+    </button>
+    <button class="margin" [routerLink]="['post/add']">Crée une publication</button>
+    <p *ngIf="user.role === 'admin'">administrator</p>
+  </div>
+  <div class="margin">
+    <button class="margin" (click)="logout()">Déconection</button>
+  </div>
+</header>
